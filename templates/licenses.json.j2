@@ -1,0 +1,19 @@
+{# https://gdc-pdpopendata-ckan.paas.junta-andalucia.es/api/3/action/package_search #}
+{% set counter = 0 -%}
+{% set licenses = {} -%}
+{%- for entry in data['result']['results'] -%}
+  {%- set current_license = entry['license_title'] -%}
+  {%- if current_license in licenses -%}
+    {% set _dummy = licenses.update( {current_license: licenses[current_license]+1 })  %}
+  {%- else -%}
+    {% set _dummy = licenses.update( {current_license: 1 })  %}
+  {%- endif -%}
+{%- endfor -%}
+{{licenses|tojson}}
+{#
+[
+  { "x": "CC-BY R", "y": 89.96 },
+  { "x": "CC-BY-NC RNC", "y": 2.47 },
+  { "x": "Consultar", "y": 7.57 }
+]
+#}
