@@ -5,21 +5,11 @@ from pydantic import BaseModel
 
 import requests
 import json
-import jinja2
-import uvicorn
+import sys
+import base64
+import zlib
 
 from fastapi.templating import Jinja2Templates
-
-import re
-CLEANR = re.compile('<.*?>') 
-
-def cleanhtml(raw_html):
-  cleantext = re.sub(CLEANR, '', raw_html)
-  return cleantext
-
-func_dict = {
-    "cleanhtml": cleanhtml
-}
 
 class QueryInputs(BaseModel):
     template: str
@@ -44,3 +34,11 @@ async def root(request: Request, input: QueryInputs):
         return response
     else:
         return {"error": "Error in the endpoint request"}
+
+@app.post("/generate")
+async def generate_get(request: Request, input: str):
+    return base64.urlsafe_b64encode(zlib.compress(input.encode('utf-8'), 9)).decode('ascii')
+
+@app.get("/{input}")
+async def get_templated_data(request: Request, input: str):
+    pass
