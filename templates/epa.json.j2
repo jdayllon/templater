@@ -1,0 +1,45 @@
+
+[
+{%- for entry in data['data'] -%}
+    {% if entry[2]['des'] == 'TOTAL' and entry[0]['des'] == "Ambos sexos" %}
+        {"x" : "{{entry[1]['des']}}", "y" : {{entry[6]['val']}}}
+        {%- if not loop.last -%},{%- endif -%}
+    {% endif %}  
+{%- endfor -%}
+]
+{# 
+[
+  {
+    "x": "Almería",
+    "y": 355.3
+  },
+  {
+    "x": "Cádiz",
+    "y": 577.6
+  },
+  {
+    "x": "Córdoba",
+    "y": 375.9
+  },
+  {
+    "x": "Granada",
+    "y": 446.6
+  },
+  {
+    "x": "Huelva",
+    "y": 248.6
+  },
+  {
+    "x": "Jaén",
+    "y": 273.9
+  },
+  {
+    "x": "Málaga",
+    "y": 800.7
+  },
+  {
+    "x": "Sevilla",
+    "y": 944.2
+  }  
+]
+#}
