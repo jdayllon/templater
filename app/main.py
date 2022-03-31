@@ -37,7 +37,6 @@ async def root(request: Request, input: QueryInputs):
         data = json.loads(res.content)
         
         templates = Jinja2Templates(directory="../templates")
-        templates.globals.update(func_dict)
         
         response = templates.TemplateResponse(input.template, {"request" : request, "data": data})
         response.headers['content-type'] = f"{input.content_type}; charset=utf-8"
