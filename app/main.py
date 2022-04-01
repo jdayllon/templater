@@ -15,7 +15,7 @@ class QueryInputs(BaseModel):
     template: str
     endpoint: str
     content_type: str
-    
+
 app = FastAPI()
 
 @app.post("/")
@@ -36,9 +36,12 @@ async def root(request: Request, input: QueryInputs):
         return {"error": "Error in the endpoint request"}
 
 @app.post("/generate")
-async def generate_get(request: Request, input: str):
-    return base64.urlsafe_b64encode(zlib.compress(input.encode('utf-8'), 9)).decode('ascii')
+async def generate_get(request: Request, input: QueryInputs):
+    template_request_body = json.dumps(dict(input)).encode('utf-8')
+    return base64.urlsafe_b64encode(zlib.compress(template_request_body, 9)).decode('ascii')
 
 @app.get("/{input}")
 async def get_templated_data(request: Request, input: str):
-    pass
+    
+    template_request_body = zlib.decompress(base64.urlsafe_b64decode(input)).decode('utf-8')
+    return await root(request, QueryInputs.parse_raw(template_request_body))
