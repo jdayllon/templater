@@ -10,18 +10,30 @@ import base64
 import zlib
 
 from fastapi.templating import Jinja2Templates
+from requests.auth import HTTPProxyAuth
+from typing import Optional
+
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class QueryInputs(BaseModel):
     template: str
     endpoint: str
     content_type: str
+    username: Optional[str]
+    password: Optional[str]
 
 app = FastAPI()
 
 @app.post("/")
 async def root(request: Request, input: QueryInputs):
     
-    res = requests.get(input.endpoint)
+    #import ipdb; ipdb.set_trace()
+
+    if input.username is None:
+        res = requests.get(input.endpoint, verify=False)
+    else:
+        res = requests.get(input.endpoint, verify=False, auth=(input.username, input.password))
     
     if res.status_code == 200:
         data = json.loads(res.content)

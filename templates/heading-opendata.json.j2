@@ -1,0 +1,59 @@
+{#
+Petición a la API
+{
+  "template": "heading-opendata.json.j2",
+  "endpoint": "https://pdpopendata-drupal-pd-web-opendata.apps.paas-pro.junta-andalucia.es/datosabiertos/portal/api/menu_items/junta-de-andalucia?_format=json",
+  "content_type": "application/json",
+  "username": "",
+  "password": "",
+}
+#}
+
+{% set BLOCK = 4 -%}
+{% set counter = namespace(value=0) -%}
+[
+{%- for entry in data -%}
+    {
+        "name": "{{entry.title}}",
+        "url": "{{entry.relative}}",
+        "image": "",
+        "textoImage": "",
+        "id": "iconos_primeros_pasos",
+        "icon": "{{entry.options.fa_icon}}",
+        "familyIcon": "{{entry.options.fa_icon_prefix}}",
+        "size": "md",
+        "modeloDropDownSecciones": "2",
+        "seccionDirectoA": [
+          {
+          "titulo": "",
+          "enlace": "",
+          "icon": "",
+          "familyIcon": ""
+          }
+        ],
+        "subSecciones": [
+            { 
+              {%- for i in range(0, entry['below']|length) -%}
+                      {%- if counter.value < (BLOCK-1) -%}
+                         {%- if counter.value == 0 -%}
+              "columnas": [
+                         {%- endif -%}
+                        {%- if loop.last -%}
+                          {%- include 'heading-opendata-menu.json.j2' -%}]
+                          {%- set counter.value = 0 -%}
+                        {%- else -%}
+                          {%- set counter.value = counter.value + 1 -%}
+                          {% include 'heading-opendata-menu.json.j2' %},
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- include 'heading-opendata-menu.json.j2' -%}]
+                        {%- set counter.value = 0 -%}
+                        {%- if not loop.last -%},{%- endif -%}
+                      {%- endif -%}
+              {%- endfor -%}
+            }
+        ]
+    } 
+    {%- if not loop.last -%},{%- endif -%} {# /* 2 - {{counter.value }} */ #}
+{%- endfor -%}
+]
