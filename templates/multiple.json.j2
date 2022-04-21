@@ -1,0 +1,28 @@
+{#
+{
+  "template": "multiple.json.j2",
+  "endpoints": [
+    {
+      "url": "http://sdigitales-elasticsearch-plataforma-tecnologica-ns.apps.paas-des.junta-andalucia.es/dataset-directo_a/_search",
+      "key": "directo_a_agricultura",
+      "payload": "{\"query\": {\"terms\": {\"_id\": [ \"drupal8JdA-142442\" ] }},\"_source\": [\"data.field_directo_a_contenido.field_directoa_url\", \"data.field_directo_a_contenido.field_icono\"]}  ",
+      "username": "",
+      "password": ""
+    },
+    {
+      "url": "http://sdigitales-elasticsearch-plataforma-tecnologica-ns.apps.paas-des.junta-andalucia.es/dataset-directo_a/_search",
+      "key": "directo_a_sandetel",
+      "payload": "{\"query\": {\"terms\": {\"_id\": [ \"drupal8JdA-142480\" ] }},\"_source\": [\"data.field_directo_a_contenido.field_directoa_url\", \"data.field_directo_a_contenido.field_icono\"]}  ",
+      "username": "",
+      "password": ""
+    }
+  ],
+  "content_type": "string"
+}
+
+
+#}
+{
+    "directo-a-1": {{directo_a_agricultura['hits']['hits'][0]['_source']['data']|tojson(indent=4)}},
+    "directo-a-2": {{directo_a_sandetel['hits']['hits'][0]['_source']['data']|tojson(indent=4)}}
+}

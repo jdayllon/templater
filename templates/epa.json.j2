@@ -3,6 +3,14 @@ Fuente de Informacion:
 https://www.juntadeandalucia.es/institutodeestadisticaycartografia/badea/informe/datosaldia?CodOper=b3_65&idNode=3663#3703
 > 2.4. Activos según nivel de formación alcanzado por sexo
 https://www.juntadeandalucia.es/institutodeestadisticaycartografia/intranet/admin/rest/v1.0/consulta/3097 
+
+Ejemplo de llamada a la API:
+{
+  "template": "epa.json.j2",
+  "endpoint": "https://www.juntadeandalucia.es/institutodeestadisticaycartografia/intranet/admin/rest/v1.0/consulta/3097 ",
+  "content_type": "application/json"
+}
+
 #}
 [
 {%- for entry in data['data'] -%}
